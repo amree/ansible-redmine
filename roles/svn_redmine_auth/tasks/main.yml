@@ -1,0 +1,22 @@
+---
+  - name: packages | install required packages
+    apt: pkg={{ item }}
+    with_items:
+      - libapache2-svn
+      - libapache-dbi-perl
+      - libapache2-mod-perl2
+      - libdbd-mysql-perl
+      - libdigest-sha-perl
+      # - libauthen-simple-ldap-perl
+
+  - name: copy Redmine's perl module
+    command: cp /home/amree/redmine/extra/svn/Redmine.pm /usr/lib/perl5/Apache/Redmine.pm
+
+  - name: create host config for {{ svn_url }}
+    template: src=host.domain.j2 dest=/etc/apache2/sites-available/{{ svn_url }}
+
+  - name: enable {{ svn_url }} site
+    command: a2ensite {{ svn_url }}
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

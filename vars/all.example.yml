@@ -1,0 +1,29 @@
+---
+ruby_version: 2.1.2
+debian_mirror: http.debian.net
+debian_backports_mirror: http.debian.net
+debian_security_mirror: security.debian.org
+# whatever
+mysql_root_password:
+# whatever
+redmine_mysql_password:
+# 10.1.10.10
+redmine_ip:
+# redmine.orgname
+redmine_url:
+# svn.orgname
+svn_url:
+# git.orgname
+git_url:
+# Just set a random string. E.g: 5xeOcgYZ9Oc5UeEfxwbJ
+api_key:
+# Only if you're going to send email though a microsoft exchange server
+exchange_host:
+exchange_port:
+exchange_domain:
+exchange_username:
+exchange_password:
+# Only if you're a Slack user
+#
+slack_api:
+slack_team:

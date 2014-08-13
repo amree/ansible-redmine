@@ -1,0 +1,32 @@
+<VirtualHost *:80>
+  ServerName {{ svn_url }}
+
+  PerlLoadModule Apache::Redmine
+  <Location />
+    DAV svn
+    SVNParentPath "/opt/svn/"
+    Order deny,allow
+    Deny from all
+    Satisfy any
+
+    PerlAccessHandler Apache::Authn::Redmine::access_handler
+    PerlAuthenHandler Apache::Authn::Redmine::authen_handler
+    AuthType Basic
+    AuthName "Subversion Repository"
+
+    #read-only access
+    <Limit GET PROPFIND OPTIONS REPORT>
+      Require valid-user
+      Allow from {{ redmine_ip }}
+      Satisfy any
+    </Limit>
+    # write access
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+        Require valid-user
+    </LimitExcept>
+
+    RedmineDSN "DBI:mysql:database=redmine;host=localhost"
+    RedmineDbUser "redmine"
+    RedmineDbPass "{{ redmine_mysql_password }}"
+  </Location>
+</VirtualHost>

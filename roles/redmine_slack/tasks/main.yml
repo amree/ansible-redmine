@@ -1,0 +1,39 @@
+---
+  - name: gem | install slack-notify
+    gem: name=slack-notify
+         version=0.3.1
+         user_install=no
+         executable=/home/amree/.rbenv/shims/gem
+    sudo_user: amree
+
+  - name: checkout redmine-slack plugin
+    git: repo=https://github.com/sciyoshi/redmine-slack.git
+         dest=/home/amree/redmine/plugins/redmine_slack
+         version=fa9afabb6d66f52fdf22bedf10b9b28f1f2071ea
+    sudo_user: amree
+
+  - name: install required gems for redmine-slack
+    command: /home/amree/.rbenv/shims/bundle
+             install
+             chdir=/home/amree/redmine/plugins/redmine_slack
+    sudo_user: amree
+
+  - name: copy slack script for svn
+    template: src=slack-svn.j2 dest=/usr/bin/slack-svn
+
+  - name: make sure slack script for svn is executable
+    file: path=/usr/bin/slack-svn
+          state=file
+          mode=0755
+
+  - name: copy slack script for git
+    copy: src=slack-git
+          dest=/usr/bin/slack-git
+          mode=0755
+
+  # TODO: Should not do it if SCM Creator is not installed
+  - name: add commands to notify slack when pushed/commit
+    template: src=post-create.sh.j2 dest=/usr/local/bin/post-create.sh mode=0755
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+SCM_REPO_PATH=$1
+SCM_TYPE=$2
+SCM_PROJECT=$3
+
+SCM_REPO_NAME=$(basename $SCM_REPO_PATH)
+SCM_REPO_ROOT=$(dirname $SCM_REPO_PATH)
+
+case "$SCM_TYPE" in
+    svn)
+        ;;
+    git)
+        ;;
+    mercurial)
+        ;;
+    bazaar)
+        ;;
+    github)
+        ;;
+    *)
+        echo "SCM not supported: $SCM_TYPE" >&2
+        ;;
+esac
+
+exit 0

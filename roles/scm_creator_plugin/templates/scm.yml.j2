@@ -1,0 +1,24 @@
+production:
+  deny_delete: false
+  auto_create: false
+  force_repository: false
+  pre_create: /usr/local/bin/pre-create.sh
+  post_create: /usr/local/bin/post-create.sh
+  pre_delete: /usr/local/bin/pre-delete.sh
+  post_delete: /usr/local/bin/post-delete.sh
+  max_repos: 0
+  only_creator: false
+  allow_add_local: true
+  allow_pickup: false
+  svn:
+    path: /opt/svn
+    svnadmin: /usr/bin/svnadmin
+    url: http://{{ svn_url }}
+  git:
+    path: /opt/git
+    git: /usr/bin/git
+    options: --bare
+    url: http://{{ git_url }}
+    update_server_info: true
+    git_ext: true
+    append: trunk

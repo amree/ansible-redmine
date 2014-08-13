@@ -1,0 +1,17 @@
+---
+  - name: create directory for storing git repositories
+    file: path=/opt/git
+          owner=root
+          group=www-data
+          mode=0775
+          recurse=yes
+          state=directory
+
+  - name: create host config for {{ git_url }}
+    template: src=host.domain.j2 dest=/etc/apache2/sites-available/{{ git_url }}
+
+  - name: enable {{ git_url }} site
+    command: a2ensite {{ git_url }}
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

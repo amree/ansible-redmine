@@ -1,0 +1,19 @@
+---
+  - hosts: redmine
+    remote_user: amree
+    sudo: yes
+    roles:
+      - common
+      - ruby
+      - mysql
+      - redmine
+      - redmine_apache
+      - svn
+      - svn_redmine_auth
+      - git_redmine_auth
+      - redmine_exchange
+      - others
+      - scm_creator_plugin
+      - redmine_slack
+    vars_files:
+      - vars/all.yml

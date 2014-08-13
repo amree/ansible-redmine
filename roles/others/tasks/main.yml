@@ -1,0 +1,9 @@
+---
+  - name: checkout Basecamp theme
+    git: repo=https://github.com/theill/redmine-basecamp-theme
+         dest=/home/amree/redmine/public/themes/basecamp
+         version=6812d619a918abcba8e6fe0f85a5385bde783c1f
+    sudo_user: amree
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

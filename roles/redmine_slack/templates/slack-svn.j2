@@ -1,0 +1,29 @@
+#!/home/amree/.rbenv/shims/ruby
+
+require 'slack-notifier'
+
+project = ARGV[0]
+revs    = ARGV[1]
+path    = ARGV[2]
+channel = ARGV[3]
+
+author  = `/usr/bin/svnlook author -r #{revs} #{path}`
+msg     = `/usr/bin/svnlook log -r #{revs} #{path}`
+
+notifier = Slack::Notifier.new "{{ slack_team }}", "{{ slack_api }}"
+notifier.channel = channel
+notifier.username = "svn"
+
+attachment = {
+  fallback: "New commit:",
+  color: "good",
+  fields: [
+            {
+               title: author,
+               value:"<http://{{ redmine_url }}/projects/#{project}/repository/revisions/#{revs}|#{revs}> #{msg}"
+            }
+          ]
+}
+
+notifier.ping "", attachments: [attachment], icon_url: "http://i.imgur.com/2RqyaIS.png"
+

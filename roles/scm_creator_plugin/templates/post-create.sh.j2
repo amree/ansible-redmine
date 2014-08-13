@@ -1,0 +1,54 @@
+#!/bin/sh
+
+SCM_REPO_PATH=$1
+SCM_TYPE=$2
+SCM_PROJECT=$3
+
+SCM_REPO_NAME=$(basename $SCM_REPO_PATH)
+SCM_REPO_ROOT=$(dirname $SCM_REPO_PATH)
+
+case "$SCM_TYPE" in
+    svn)
+        #
+        chmod 775 -R $SCM_REPO_PATH
+
+#
+cat << EOF > $SCM_REPO_PATH/hooks/post-commit
+#!/bin/bash
+REPOS="\$1"
+REV="\$2"
+
+
+curl -# "http://{{ redmine_url }}/sys/fetch_changesets?key={{ api_key }}&id=$SCM_PROJECT" &
+
+EOF
+
+        #
+        chmod +x $SCM_REPO_PATH/hooks/post-commit
+        ;;
+    git)
+        #
+        chmod 775 -R $SCM_REPO_PATH
+
+#
+cat << EOF > $SCM_REPO_PATH/hooks/post-receive
+#!/bin/bash
+
+curl -# "http://{{ redmine_url }}/sys/fetch_changesets?key={{ api_key }}&id=$SCM_PROJECT" &
+
+EOF
+
+        #
+        #
+        chmod +x $SCM_REPO_PATH/hooks/post-receive
+        ;;
+    mercurial)
+        ;;
+    bazaar)
+        ;;
+    github)
+        ;;
+    *)
+        echo "SCM not supported: $SCM_TYPE" >&2
+        ;;
+esac

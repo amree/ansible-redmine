@@ -1,0 +1,39 @@
+---
+  # SCM Creator plugin will use amree.amree as the user to create repositories
+  # This will be a problem since svn commit / git push will use www-data to write changes
+  - name: add www-data to group amree
+    user: name=www-data groups=amree
+
+  - name: checkout scm creator source code
+    subversion: repo=http://subversion.andriylesyuk.com/scm-creator
+                dest=/home/amree/redmine/plugins/redmine_scm
+                revision=140
+    sudo_user: amree
+
+  - name: copy scm creator config file
+    template: src=scm.yml.j2 dest=/home/amree/redmine/config/scm.yml
+    sudo_user: amree
+
+  - name: copy all script files for pre and post repository creation/delete
+    template: src={{ item }}.j2 dest=/usr/local/bin/{{ item }} mode=0755
+    with_items:
+      - pre-create.sh
+      - post-create.sh
+      - pre-delete.sh
+      - post-delete.sh
+
+  - name: run plugin's migration
+    command: /home/amree/.rbenv/shims/rake
+             RAILS_ENV=production
+             redmine:plugins:migrate
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: set the correct directory permission
+    file: path=/opt/{{ item }} state=directory owner=amree group=www-data mode=0775
+    with_items:
+      - git
+      - svn
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

@@ -1,0 +1,31 @@
+---
+  - name: packages | install required package
+    apt: pkg={{ item }}
+    with_items:
+      - apache2-mpm-worker
+      - apache2-threaded-dev
+      - libapr1-dev
+      - libaprutil1-dev
+
+  - name: gem | install passenger
+    gem: name=passenger
+         version=4.0.48
+         user_install=no
+         executable=/home/amree/.rbenv/shims/gem
+    sudo_user: amree
+
+  - name: passenger | install apache module
+    command: /home/amree/.rbenv/shims/passenger-install-apache2-module --auto
+    sudo_user: amree
+
+  - name: apache | setup passenger config
+    copy: src=passenger.conf dest=/etc/apache2/conf.d/passenger.conf
+
+  - name: apache | setup site
+    template: src=host.domain.j2 dest=/etc/apache2/sites-available/{{ redmine_url }}
+
+  - name: apache | enable site
+    command: a2ensite {{ redmine_url }}
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

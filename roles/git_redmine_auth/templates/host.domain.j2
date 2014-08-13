@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+  ServerName {{ git_url }}
+  DocumentRoot /opt/git
+
+  SetEnv GIT_PROJECT_ROOT /opt/git
+  SetEnv GIT_HTTP_EXPORT_ALL
+  SetEnv REMOTE_USER=$REDIRECT_REMOTE_USER
+
+  ScriptAlias / /usr/lib/git-core/git-http-backend/
+  AliasMatch ^/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$          /opt/git/$1
+  AliasMatch ^/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ /opt/git/$1
+
+  PerlLoadModule Apache::Redmine
+
+  ScriptAliasMatch \
+    "(?x)^/(.*/(HEAD | \
+    info/refs | \
+    objects/(info/[^/]+ | \
+        [0-9a-f]{2}/[0-9a-f]{38} | \
+        pack/pack-[0-9a-f]{40}\.(pack|idx)) | \
+    git-(upload|receive)-pack))$" \
+    /usr/lib/git-core/git-http-backend/$1
+
+  <Directory /usr/libexec/git-core/>
+    Options +ExecCGI
+    Allow From All
+  </Directory>
+
+
+  <Location "/">
+    AuthType Basic
+    AuthName "Git Repositories"
+    Require valid-user
+
+    PerlAccessHandler Apache::Authn::Redmine::access_handler
+    PerlAuthenHandler Apache::Authn::Redmine::authen_handler
+
+    RedmineDSN "DBI:mysql:database=redmine;host=localhost"
+
+    RedmineDbUser "redmine"
+    RedmineDbPass "{{ redmine_mysql_password }}"
+    RedmineGitSmartHttp yes
+  </Location>
+</VirtualHost>

@@ -1,0 +1,24 @@
+---
+  - name: gem | prepare for ruby-ntlm installation
+    copy: src=Gemfile.local
+          dest=/home/amree/redmine/Gemfile.local
+    sudo_user: amree
+
+  - name: gem | install ruby-ntlm
+    command: /home/amree/.rbenv/shims/bundle
+             install --without development test
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: update coding
+    copy: src=environment.rb
+          dest=/home/amree/redmine/config/environment.rb
+    sudo_user: amree
+
+  - name: setup email configuration using exchange
+    template: src=configuration.yml.j2
+              dest=/home/amree/redmine/config/configuration.yml
+    sudo_user: amree
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted

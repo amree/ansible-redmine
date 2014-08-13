@@ -1,0 +1,28 @@
+---
+  - name: apt | change to defined mirrors
+    template: src=sources.list.j2 dest=/etc/apt/sources.list
+
+  - name: apt | update repository cache
+    apt: update_cache=yes
+
+  - name: ntp | make sure installed
+    apt: pkg=ntp
+
+  - name: packages | install common packages
+    apt: pkg={{ item }}
+    with_items:
+      - pv
+      - htop
+      - git
+      - curl
+      - build-essential
+      - zip
+      - tree
+
+  - name: ntp | make sure configured
+    copy: src=ntp.conf dest=/etc/ntp.conf
+    notify:
+      - restart ntpd
+
+  - name: ntp | make sure running and enabled
+    service: name=ntp state=started enabled=yes

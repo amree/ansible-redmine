@@ -1,0 +1,25 @@
+  - name: mysql | install
+    apt: pkg={{ item }}
+    with_items:
+      - mysql-server
+      - python-mysqldb
+
+  - name: mysql | start
+    service: name=mysql state=started enabled=yes
+
+  # 'localhost' needs to be the last item for idempotency, see
+  # http://ansible.cc/docs/modules.html#mysql-user
+  - name: mysql | update all root passwords
+    mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_user=root login_password=
+    with_items:
+      - "{{ansible_hostname}}"
+      - 127.0.0.1
+      - ::1
+      - localhost
+
+  - name: mysql | use custom cnf
+    template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+
+  - name: mysql | restart service
+    service: name=mysql state=restarted
+

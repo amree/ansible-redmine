@@ -1,0 +1,85 @@
+---
+  - name: packages | install required package
+    apt: pkg={{ item }}
+    with_items:
+      - libmagickwand-dev
+      - sendmail
+      - sendmail-bin
+      - imagemagick
+
+  - name: redmine | checkout
+    git: repo=https://github.com/redmine/redmine.git
+         dest=/home/amree/redmine
+         version=2.5.2
+    sudo_user: amree
+
+  - name: mysql | drop database first
+    mysql_db: name=redmine
+              login_user=root
+              login_password={{ mysql_root_password }}
+              state=absent
+
+  - name: mysql | create database
+    mysql_db: name=redmine
+              encoding=utf8
+              login_user=root
+              login_password={{ mysql_root_password }}
+
+  - name: mysql | create user for redmine
+    mysql_user: name=redmine
+                password={{ redmine_mysql_password }}
+                login_user=root
+                login_password={{ mysql_root_password }}
+                priv=redmine.*:ALL
+
+  - name: mysql | copy database config
+    template: src=database.yml.j2
+              dest=/home/amree/redmine/config/database.yml
+
+  - name: bundler | install dependencies
+    command: /home/amree/.rbenv/shims/bundle
+             install --without development test
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: generate session store secret
+    command: /home/amree/.rbenv/shims/rake
+             RAILS_ENV=production
+             generate_secret_token
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: database migrations
+    command: /home/amree/.rbenv/shims/rake
+             RAILS_ENV=production
+             db:migrate
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: load default dataset
+    command: /home/amree/.rbenv/shims/rake
+             RAILS_ENV=production
+             REDMINE_LANG=en
+             redmine:load_default_data
+             chdir=/home/amree/redmine
+    sudo_user: amree
+
+  - name: api | copy mysql dump file
+    template: src=dump-api-settings.sql.j2 dest=/tmp/dump-api-settings.sql
+
+  - name: api | import settings to enable api
+    mysql_db: name=redmine
+              state=import
+              target=/tmp/dump-api-settings.sql
+              login_user=redmine
+              login_password={{ redmine_mysql_password }}
+
+  - name: create plugin assets directory
+    file: path=/home/amree/redmine/public/plugin_assets
+          state=directory
+    sudo_user: amree
+
+  - name: setup email configuration using async sendmail
+    template: src=configuration.yml.j2
+              dest=/home/amree/redmine/config/configuration.yml
+    sudo_user: amree

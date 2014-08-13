@@ -1,0 +1,63 @@
+---
+  - name: rbenv | checkout
+    git: repo=https://github.com/sstephenson/rbenv.git
+         dest=/home/amree/.rbenv
+         version=v0.4.0
+    sudo_user: amree
+
+  - name: rbenv | export path to bashrc
+    lineinfile: dest=/home/amree/.bashrc line="export PATH=\"$HOME/.rbenv/bin:$PATH\""
+    sudo_user: amree
+
+  - name: rbenv | export path to bashrc
+    lineinfile: dest=/home/amree/.bashrc line="eval \"$(rbenv init -)\""
+    sudo_user: amree
+
+  - name: rbenv plugins | checkout
+    git: repo={{ item.url }}
+         dest=/home/amree/.rbenv/plugins/{{ item.name }}
+    with_items:
+      - { url: 'https://github.com/sstephenson/ruby-build.git', name: 'ruby-build' }
+      - { url: 'https://github.com/sstephenson/rbenv-gem-rehash', name: 'rbenv-gem-rehash' }
+      - { url: 'https://github.com/rkh/rbenv-update', name: 'rbenv-update' }
+    sudo_user: amree
+
+  - name: packages | install required packages
+    apt: pkg={{ item }}
+    with_items:
+      - build-essential
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - libreadline-dev
+      - libmysqlclient-dev
+      - ruby-dev
+
+  - name: ruby | check installed ruby
+    shell: /home/amree/.rbenv/bin/rbenv versions | grep -o "{{ ruby_version  }}"
+    register: ruby_installed
+    ignore_errors: yes
+    sudo_user: amree
+
+  - name: rbenv | install ruby
+    shell: /home/amree/.rbenv/bin/rbenv install {{ ruby_version }} -k
+    sudo_user: amree
+    when: ruby_installed.stdout == ""
+
+  - name: rbenv | set global version
+    shell: /home/amree/.rbenv/bin/rbenv global {{ ruby_version }}
+    sudo_user: amree
+
+  - name: nodejs | install
+    apt: pkg=nodejs default_release=wheezy-backports
+
+  - name: gems | disable rdoc and ri
+    lineinfile: dest=/home/amree/.gemrc line="{{ item }}" create=yes
+    with_items:
+      - "install: --no-rdoc --no-ri"
+      - "update: --no-rdoc --no-ri"
+    sudo_user: amree
+
+  - name: gem | install bundler
+    gem: name=bundler executable=/home/amree/.rbenv/shims/gem state=present user_install=no
+    sudo_user: amree
+

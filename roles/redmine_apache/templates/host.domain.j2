@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+    ServerName {{ redmine_url }}
+    DocumentRoot /home/amree/redmine/public
+    <Directory /home/amree/redmine/public>
+        AllowOverride all
+        Options -MultiViews
+    </Directory>
+</VirtualHost>

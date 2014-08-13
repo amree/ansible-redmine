@@ -1,0 +1,15 @@
+---
+  - name: packages | install required package
+    apt: pkg={{ item }}
+    with_items:
+      - subversion
+
+  - name: create directory for subversion
+    file: path=/opt/svn
+          state=directory
+          owner=root
+          group=www-data
+
+  - name: service | restart apache
+    service: name=apache2 state=restarted
+
