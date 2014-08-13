@@ -1,12 +1,27 @@
+
+# ALERT
+
+This playbook has only been tested in Virtual Machines (with positive results). Will be deployed in production in the coming weeks. Most of the scripts are done. however I really need to update the README to make sure it's more friendly for new people.
+
 # Info
 
-## Stacks
+## Features
 
 - redmine v2.5.2
 - rbenv v0.4.0
-- ruby v2.1.2
+- ruby v2.1.2 
+- Advance Git integration with Redmine
+- Advance Subversion integration with Redmine
+- One authentication for everything (Redmine, Subversion and Git)
+- Support for Slack
+- Support for Microsoft Exchange Email
+- Support for sendmail
+- Support for repository creation through the web
+- Only support MySQL
+- Installed with Basecamp theme (waay better than the default theme)
+- Only for Debian host
 
-## Current Setup Info
+## Current Setup
 
 - A normal user named `amree`
 - `amree` can run `sudo`
