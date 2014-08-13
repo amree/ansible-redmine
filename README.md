@@ -30,20 +30,20 @@ This playbook has only been tested in Virtual Machines (with positive results). 
 
 ## Pre Install
 
-### Your host
+### Your Redmine
 
-- Set a hostname for the host
-- Set a static IP for the host
-- 3 domains has been pointed to the host (git.orgname, svn.orgname,
+- Set a hostname, for e.g: Redmine
+- Set a static IP
+- 3 domains has been pointed to the Redmine (e.g: git.orgname, svn.orgname,
   redmine.orgname)
-- Copy your ssh key into the host
-- Change the redmine address name in `hosts` file
 - Create a copy and change all variables in `vars/all.yml`
 
 ### Your workstation
 
 - Install `ansible`
-- Copy `hosts.example` to `hosts`
+- Copy `hosts.example` to `hosts` and fill in the values
+- Copy `vars/all.example.yml` to `vars/all.yml` and fill in the values
+- Copy your ssh key into Redmine
 
 ## Install
 
