@@ -1,5 +1,3 @@
-![alt tag](http://i.imgur.com/9iSsIvB.png)
-
 # ALERT
 
 This playbook has only been tested in Virtual Machines (with positive results). Will be deployed in production in the coming weeks. Most of the scripts are done. however I really need to update the README to make sure it's more friendly for new people.
