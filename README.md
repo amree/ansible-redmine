@@ -93,3 +93,7 @@ $ chmod 775 -R reponame
 - This ansible playbook is not idempotent! So, it should only work on the first
   try
 
+# TODO
+
+- [SSL Certificate](http://runssl.com/members/knowledgebase/9/SSL-Certificate-For-Private-Internal-IP-Address-or-Local-Intranet-Server-Name.html)
+
