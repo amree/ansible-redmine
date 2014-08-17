@@ -18,6 +18,9 @@
     command: /home/amree/.rbenv/shims/passenger-install-apache2-module --auto
     sudo_user: amree
 
+  - name: apache | disable default site
+    command: a2dissite default
+
   - name: apache | setup passenger config
     copy: src=passenger.conf dest=/etc/apache2/conf.d/passenger.conf
 
