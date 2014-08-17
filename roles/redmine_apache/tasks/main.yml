@@ -21,6 +21,9 @@
   - name: apache | disable default site
     command: a2dissite default
 
+  - name: add amree to www-data group
+    user: name=amree groups=www-data
+
   - name: apache | setup passenger config
     copy: src=passenger.conf dest=/etc/apache2/conf.d/passenger.conf
 
