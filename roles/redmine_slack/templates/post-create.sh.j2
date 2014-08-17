@@ -37,7 +37,7 @@ cat << EOF > $SCM_REPO_PATH/hooks/post-receive
 
 curl -# "http://{{ redmine_url }}/sys/fetch_changesets?key={{ api_key }}&id=$SCM_PROJECT" &
 
-slack-git
+slack-git &
 EOF
 
 cat << EOF >> $SCM_REPO_PATH/config
