@@ -47,19 +47,20 @@ ansible-playbook -K -i hosts site.yml
 
 Make sure you can do these tasks (Step by step tutorial will be written in due time):
 
-0. Open your Redmine URL
-1. Login as admin, the default is `admin` for username and password
-2. Make sure to change admin's email to a valid email
-3. Create a project
-4. Create two issues in the newly created project
-5. Create a Git repository from the web interface
-6. Assign admin as a Manager or Developer for the project
-7. Clone/Checkout the project into your workstation
-8. Create a file, put some contents
-9. Push or commit your changes. Make sure you'll close the issue created just now using your commit message
-10. Check the issue to make sure it's closed
-11. Check repository tab to ensure your changes are available
-12. Check `/var/log/apache2/error.log` for any errors.
+1. Open your Redmine URL
+2. Login as admin, the default is `admin` for username and password
+3. Make sure to change admin's email to a valid email
+4. Create a project
+5. Assign admin as a Manager or Developer for the project
+6. Create two issues in the newly created project
+7. Create a Git repository from the web interface
+8. Clone/Checkout the project into your workstation
+9. Create a file, put some contents
+10. Push or commit your changes. Make sure you'll close the issue created just now using your commit message
+11. Check the issue to make sure it's closed
+12. Check repository tab to ensure your changes are available
+13. Repeat step 5, but this time with Subversion repository
+14. Check `/var/log/apache2/error.log` for any errors.
 
 # Extra
 
