@@ -65,12 +65,12 @@
     sudo_user: amree
 
   - name: api | copy mysql dump file
-    template: src=dump-api-settings.sql.j2 dest=/tmp/dump-api-settings.sql
+    template: src=dump-settings.sql.j2 dest=/tmp/dump-settings.sql
 
   - name: api | import settings to enable api
     mysql_db: name=redmine
               state=import
-              target=/tmp/dump-api-settings.sql
+              target=/tmp/dump-settings.sql
               login_user=redmine
               login_password={{ redmine_mysql_password }}
 
