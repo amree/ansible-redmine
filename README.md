@@ -33,8 +33,10 @@ This README is still in progress and hopefully when it's done, it has every tuto
 ### Your workstation
 
 - Install `ansible`
+- Clone this repository
 - Copy `hosts.example` to `hosts` and fill in the IP of your Redmine
 - Copy `vars/all.example.yml` to `vars/all.yml` and fill in the values
+- Check `site.yml` and comment out optional roles that you don't want by adding `#` in front of it
 - Copy your ssh key into Redmine
 
 ## Install
