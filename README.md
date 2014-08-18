@@ -21,7 +21,7 @@ This README is still in progress and hopefully when it's done, it has every tuto
 
 ## Pre Install
 
-### Your Redmine
+### Your Redmine (your target host)
 
 - Set your hostname and domain e.g redmine.orgname
 - Set a static IP
