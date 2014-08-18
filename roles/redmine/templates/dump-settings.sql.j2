@@ -3,3 +3,4 @@ insert into settings set name = 'sys_api_key', value = '{{ api_key }}', updated_
 insert into settings set name = 'autofetch_changesets', value = '0', updated_on = now();
 insert into settings set name = 'bcc_recipients', value = '0', updated_on = now();
 insert into settings set name = 'enabled_scm', value = '---\n- Subversion\n- Git';
+insert into settings set name = 'commit_update_keywords', value = "---\n- status_id: '5'\n  done_ratio: '100'\n  keywords: fixes,closes";
