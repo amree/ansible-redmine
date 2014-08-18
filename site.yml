@@ -12,6 +12,7 @@
       - svn_redmine_auth
       - git_redmine_auth
       - redmine_exchange
+      # Optional roles
       - others
       - scm_creator_plugin
       - redmine_slack
