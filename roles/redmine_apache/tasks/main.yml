@@ -2,7 +2,7 @@
   - name: packages | install required package
     apt: pkg={{ item }}
     with_items:
-      - apache2-mpm-worker
+      - apache2-mpm-prefork
       - apache2-threaded-dev
       - libapr1-dev
       - libaprutil1-dev
