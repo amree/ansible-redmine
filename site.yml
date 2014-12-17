@@ -5,6 +5,7 @@
     roles:
       - common
       - ruby
+      - nodejs
       - mysql
       - redmine
       - redmine_apache

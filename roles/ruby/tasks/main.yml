@@ -47,9 +47,6 @@
     shell: /home/amree/.rbenv/bin/rbenv global {{ ruby_version }}
     sudo_user: amree
 
-  - name: nodejs | install
-    apt: pkg=nodejs default_release=wheezy-backports
-
   - name: gems | disable rdoc and ri
     lineinfile: dest=/home/amree/.gemrc line="{{ item }}" create=yes
     with_items:
