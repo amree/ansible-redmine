@@ -1,6 +1,6 @@
-This README is still in progress and hopefully when it's done, it has every tutorial you need to deploy Redmine from A to Z.
+# README
 
-# Info
+**ATTENTION: THIS REPOSITORY IS NOT ACTIVE ANYMORE**
 
 ## Features
 
